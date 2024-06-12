@@ -18,6 +18,12 @@ class Seller extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     public function getRouteKeyName()
+     {
+         return 'slug';
+     }
+
     protected $fillable = [
         'name',
         'email',
@@ -49,4 +55,14 @@ class Seller extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

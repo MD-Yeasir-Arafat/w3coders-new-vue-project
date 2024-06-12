@@ -18,11 +18,12 @@ class SellerFactory extends Factory
      */
     public function definition()
     {
+        $image = "upload/categories/".$this->faker->numberBetween(1,10).".png";
         return [
             'name' => fake()->name(),
             'phone' => fake()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),
-            'image' => $this->faker->imageUrl('350','350'),
+            'image' => $image,
             'slug' => $this->faker->unique()->slug(),
             'shop_name' => fake()->name(),
             'address' => fake()->name(),

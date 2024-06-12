@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('order_number');
             $table->text('shipping_address');
-            $table->string('pyment_type')->default('cash');
+            $table->string('payment_type')->default('cash');
             $table->float('subtotal',8,2);
             $table->float('discount',8,2);
             $table->float('charges',8,2);

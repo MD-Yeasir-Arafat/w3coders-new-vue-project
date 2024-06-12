@@ -3,8 +3,14 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Admin;
+use App\Models\Coupon;
+use App\Models\District;
+use App\Models\Division;
+use App\Models\Seller;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,12 +21,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Admin::truncate();
+        Seller::truncate();
+        Division::truncate();
+        District::truncate();
+        Coupon::truncate();
+        User::truncate();
 
         $this->call([
             AdminsTableSeeder::class,
             SellersTableSeeder::class,
             DivisionSeeder::class,
             DistrictSeeder::class,
+            CouponSeeder::class,
         ]);
 
         \App\Models\User::factory(10)->create();
@@ -35,7 +48,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@gmail.com',
             'phone' => '01840347390',
-            'password' => Hash::make('password'),
+            'password' => 'password',
         ]);
 
         
