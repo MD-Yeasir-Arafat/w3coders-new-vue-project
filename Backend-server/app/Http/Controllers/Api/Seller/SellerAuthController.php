@@ -47,4 +47,5 @@ class SellerAuthController extends Controller
     {
         return SellerAuthResource::make($request->user());
     }
+
 }

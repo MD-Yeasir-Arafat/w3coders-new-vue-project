@@ -1,0 +1,51 @@
+import { createRouter, createWebHistory } from "vue-router";
+import NProgress from "nprogress";
+import Index from "../pages/Home.vue";
+
+const routes = [
+  {
+    path: "/",
+    name: "index",
+    component: Index,
+    meta: { title: "Home" },
+  },
+ 
+];
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
+  scrollBehavior() {
+    // always scroll to top
+    return { top: 0, behavior: "smooth" };
+  },
+});
+
+const default_title = "404";
+// router.beforeEach((to, from, next) => {
+//   document.title = to.meta.title || default_title;
+//   NProgress.start();
+//   // check user loggedin
+//   const loggedIn = useAuth();
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     if (!loggedIn.user.meta) {
+//       next({ name: "user.login" });
+//     } else {
+//       next();
+//     }
+//   } else if (to.matched.some((record) => record.meta.guest)) {
+//     if (loggedIn.user.meta) {
+//       next({ name: "user.profile" });
+//     } else {
+//       next();
+//     }
+//   } else {
+//     next();
+//   }
+// });
+
+router.afterEach(() => {
+  NProgress.done();
+});
+
+export default router;

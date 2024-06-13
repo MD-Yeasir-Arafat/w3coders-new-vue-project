@@ -9,7 +9,7 @@ Route::controller(SellerAuthController::class)->group(function(){
     Route::post('/register', 'register');
 });
 
-Route::controller(SellerController::class)->group(function () {
+Route::controller(SellerController::class)->group(function(){
     Route::post('/apply', 'sellerApply');
 });
 
@@ -19,3 +19,5 @@ Route::middleware('auth:seller-api')->group(function(){
         Route::get('/me', 'user');
     });
 });
+
+

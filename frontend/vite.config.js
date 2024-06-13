@@ -9,9 +9,7 @@ export default defineConfig({
   
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-      // '@': resolve(__dirname, './src')
-      // { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+      "@": fileURLToPath(new URL("./src", import.meta.url))
     },
   },
 

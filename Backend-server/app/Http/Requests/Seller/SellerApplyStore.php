@@ -14,7 +14,7 @@ class SellerApplyStore extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -33,11 +33,11 @@ class SellerApplyStore extends FormRequest
     {
         return [
             'name' => ['required'],
-            'shop_name' => ['required'],
-            'address' => ['required'],
             'email' => ['required', 'email'],
             'phone' => ['required'],
             'password' => ['required', 'confirmed'],
+            'shop_name' => ['required'],
+            'address' => ['required'],
         ];
     }
 }
