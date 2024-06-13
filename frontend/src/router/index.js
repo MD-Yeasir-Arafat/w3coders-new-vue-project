@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import NProgress from "nprogress";
 
-import { Index, ShopPage, SingleProduct, CheckOut } from "@/views/pages";
+import { Index, ShopPage, SingleProduct, CheckOut, OrderDone } from "@/views/pages";
 import { SellerList, SellerStore, SellerApply } from "@/views/pages/seller";
 import { UserLogin, UserRegister } from "@/views/auth/index.js";
 import { MyProfile, MyOrders, MyWishlist, OrderDeatils } from "@/views/user";
@@ -85,6 +85,13 @@ const routes = [
     name: "order.details",
     component: OrderDeatils,
     meta: { title: "order-details", requiresAuth: true },
+  },
+
+  {
+    path: "/order-success",
+    name: "orderdone.page",
+    component: OrderDone,
+    meta: { title: "order-success", requiresAuth: true },
   },
 ];
 

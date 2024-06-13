@@ -79,7 +79,7 @@ class ProfileController extends Controller
             @unlink(public_path($request->user()->image));
             $request->user()->update([
                 'image' => $save_url
-            ]);
+            ]); 
 
             return AuthResource::make($request->user());
         }

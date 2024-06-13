@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import { ref } from "vue";
 import { useCart, useAddress, useCoupon, useOrder } from "@/stores";
 import { storeToRefs } from "pinia";
 const cart = useCart();
@@ -11,6 +11,7 @@ import { useStatus } from "@/composables/status.js";
 const status = useStatus();
 const coupon = useCoupon();
 const order = useOrder();
+const { loading } = storeToRefs(order);
 const { couponBtnClass, couponFormClass } = storeToRefs(status);
 
 const couponCode = ref("");
@@ -22,10 +23,14 @@ const applyCoupon = () => {
 // const couponBtn = () => {
 //   // $(this).hide(), $(".coupon-form").css("display", "flex");
 // };
-
-const placeOrder = () => {
-  order.place();
-}
+import { useRouter } from "vue-router";
+const router = useRouter();
+const placeOrder = async () => {
+  const res = await order.place();
+  if(res.data){
+    router.push({ name: 'orderdone.page', query: { order_type: true }})
+  }
+};
 </script>
 <template>
   <div>
@@ -114,7 +119,12 @@ const placeOrder = () => {
                       <span>Sub total</span
                       ><span>{{ $filters.currencySymbol(totalPrice) }}</span>
                     </li>
-                    <li><span>discount</span><span>{{ $filters.currencySymbol(coupon.discount) }}</span></li>
+                    <li>
+                      <span>discount</span
+                      ><span>{{
+                        $filters.currencySymbol(coupon.discount)
+                      }}</span>
+                    </li>
                     <li v-if="address.division">
                       <span>delivery charge</span
                       ><span>
@@ -124,7 +134,9 @@ const placeOrder = () => {
                     </li>
                     <li>
                       <span>Total<small>(Incl. VAT)</small></span
-                      ><span>{{ $filters.currencySymbol(coupon.grandTotal) }}</span>
+                      ><span>{{
+                        $filters.currencySymbol(coupon.grandTotal)
+                      }}</span>
                     </li>
                   </ul>
                 </div>
@@ -132,7 +144,18 @@ const placeOrder = () => {
             </div>
           </div>
           <div class="checkout-proced">
-            <button class="btn btn-inline" @click.prevent="placeOrder"><span></span> Place Order</button>
+            <button
+              class="btn btn-inline"
+              type="submit"
+              :disabled="loading"
+              @click.prevent="placeOrder"
+            >
+              Place Order
+              <span
+                v-show="loading"
+                class="spinner-border spinner-border-sm mr-1"
+              ></span>
+            </button>
           </div>
         </div>
       </div>

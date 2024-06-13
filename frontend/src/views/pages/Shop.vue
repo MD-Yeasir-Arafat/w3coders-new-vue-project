@@ -14,7 +14,7 @@ onMounted(() => {
   queryProducts();
   getProducts();
   shop.sideBareData();
-
+  queryHeaderSearch();
 });
 
 const show = ref(12);
@@ -31,7 +31,7 @@ const getProducts = (page = 1) => {
     selectedCategory.value,
     price_range.value,
     searchQuery.value,
-    sort.value,
+    sort.value
   );
 };
 
@@ -98,6 +98,21 @@ watch(
   }
 );
 
+// header search
+
+const queryHeaderSearch = () => {
+  searchQuery.value = "";
+  if (route.query.search) {
+    searchQuery.value = route.query.search;
+  }
+};
+watch(
+  () => route.query.search,
+  (newVal, oldVal) => {
+    queryHeaderSearch();
+    getProducts();
+  }
+);
 </script>
 
 <template lang="">

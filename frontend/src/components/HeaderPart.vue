@@ -2,6 +2,7 @@
 import { useAuth, useNotification, useCart } from "@/stores";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 const auth = useAuth();
 const cart = useCart();
 const { user, loading } = storeToRefs(auth);
@@ -31,6 +32,10 @@ function menu() {
 function cartshow() {
   cart.toggleCartSidebar();
 }
+const searchData = ref("");
+const handleSearch = () => {
+  router.push({ name: "shop", query: { search: searchData.value } });
+};
 </script>
 
 <template>
@@ -75,8 +80,12 @@ function cartshow() {
             ><img src="@/assets/images/logo.png" alt="logo"
           /></router-link>
 
-          <form class="header-form">
-            <input type="text" placeholder="Search anything..." /><button>
+          <form class="header-form" @submit.prevent="handleSearch">
+            <input
+              type="text"
+              placeholder="Search anything..."
+              v-model="searchData"
+            /><button>
               <i class="fas fa-search"></i>
             </button>
           </form>
@@ -183,8 +192,8 @@ function cartshow() {
   display: none;
   margin-top: 0.5px;
 }
-.hover-nav .nav-item:hover .nav-link {
-}
+/* .hover-nav .nav-item:hover .nav-link {
+} */
 .hover-nav .nav-item:hover .dropdown-menu {
   display: block;
 }

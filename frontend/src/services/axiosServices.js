@@ -22,4 +22,20 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+//user auto logout
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      window.location.href = "/";
+      const authInfo = useAuth();
+      authInfo.$reset();
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default axiosInstance;

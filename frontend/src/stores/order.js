@@ -11,6 +11,7 @@ export const useOrder = defineStore("order", {
         loading: false,
         page: 1,
         noResult: false,
+        recentOrder: false,
     }),
 
     getters: {
@@ -53,7 +54,7 @@ export const useOrder = defineStore("order", {
             const cart = useCart();
             const address = useAddress();
             const coupon = useCoupon();
-
+            this.loading = true;
             try {
                 const res = await axiosInstance.post("/order-place", {
                     subtotal: cart.totalPrice,
@@ -63,13 +64,16 @@ export const useOrder = defineStore("order", {
                     items: cart.cartItems,
                 });
                 if (res.status === 201) {
-                    cart.$reset();
+                    this.recentOrder = true;
+                    // cart.$reset();
                     return Promise.resolve(res.data);
                 }
             } catch (error) {
                 if (error.response.data) {
                     console.log(error.response.data);
                 }
+            } finally{
+                this.loading = false;
             }
         },
 
