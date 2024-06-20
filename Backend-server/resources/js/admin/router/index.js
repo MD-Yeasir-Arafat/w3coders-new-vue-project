@@ -1,15 +1,23 @@
 import { createRouter, createWebHistory } from "vue-router";
 import NProgress from "nprogress";
-import Index from "../pages/Home.vue";
+import Index from "@/admin/pages/Home.vue";
+import Login from "@/admin/pages/auth/Login.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/home",
     name: "index",
     component: Index,
     meta: { title: "Home" },
   },
- 
+  {
+    path: "/",
+    name: "login",
+    component: Login,
+    meta: { title: "Login" },
+  },
+  
+
 ];
 
 const router = createRouter({

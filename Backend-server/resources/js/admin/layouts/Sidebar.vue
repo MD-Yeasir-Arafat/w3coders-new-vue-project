@@ -72,7 +72,7 @@ import { RouterLink } from 'vue-router';
                     </li>
 
                     <li class="nav-item">
-                        <RouterLink :to="{name: 'index'}" class="nav-link active">
+                        <RouterLink :to="{ name: 'index' }" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 Dashboard
