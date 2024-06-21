@@ -2,7 +2,7 @@
 import AdminLayout from "./layouts/AdminLayout.vue";
 import AdminGuestLayout from "./layouts/AdminGuestLayout.vue";
 
-const isLoggedIn = true;
+const isLoggedIn = false;
 </script>
 <template>
     <div>
