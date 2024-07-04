@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Admin\DivisionController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\SliderController;
 use App\Http\Controllers\Api\Admin\SubCategoryController;
+use App\Http\Controllers\Api\FilemanagerController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AdminAuthController::class)->group(function(){
@@ -21,6 +22,12 @@ Route::middleware('auth:admin-api')->group(function(){
         Route::get('/me', 'user');
     });
 
+    Route::controller(FilemanagerController::class)->group(function () {
+        Route::post('/file-manager/upload', 'upload');
+        Route::get('/file-manager/files', 'files');
+        Route::delete('/file-manager/{id}', 'destory');
+    });
+
     Route::apiResources([
         'sliders' => SliderController::class,
         'brands' => BrandController::class,
@@ -29,4 +36,8 @@ Route::middleware('auth:admin-api')->group(function(){
         'products' => ProductController::class,
         'divisions' => DivisionController::class,
     ]);
+
+    Route::controller(BrandController::class)->group(function () {
+        Route::delete('/brand/multiple-delete', 'multipleDelete');
+    });
 });

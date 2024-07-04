@@ -8,32 +8,39 @@ import router from '@/admin/router';
 import { createApp } from 'vue';
 import App from './App.vue';
 
+import DropZone from 'dropzone-vue';
+// optionally import default styles
+import 'dropzone-vue/dist/dropzone-vue.common.css';
+
 import { createPinia } from 'pinia'
 const pinia = createPinia()
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 pinia.use(piniaPluginPersistedstate)
 
+
+
 const app = createApp(App)
 app.use(router);
 app.use(ElementPlus);
 app.use(pinia);
+app.use(DropZone);
 
 app.config.globalProperties.$filters = {
-    currencySymbol(value) {
-      return "৳ " + value.toLocaleString();
-    },
-    makeImagePath(img) {
-      return import.meta.env.VITE_API_URL + "/" + img;
-    },
-    textShort(text, size) {
-      if (!text) return "";
-      text = text.toString();
-  
-      if (text.length <= size) {
-        return text;
-      }
-      return text.substr(0, size) + ".....";
-    },
-  };
-  
+  currencySymbol(value) {
+    return "৳ " + value.toLocaleString();
+  },
+  makeImagePath(img) {
+    return import.meta.env.VITE_API_URL + "/" + img;
+  },
+  textShort(text, size) {
+    if (!text) return "";
+    text = text.toString();
+
+    if (text.length <= size) {
+      return text;
+    }
+    return text.substr(0, size) + ".....";
+  },
+};
+
 app.mount('#app')

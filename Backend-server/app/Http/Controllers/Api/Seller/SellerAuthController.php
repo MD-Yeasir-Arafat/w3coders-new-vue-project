@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\SellerLoginRequest;
 use App\Http\Resources\Seller\SellerAuthResource;
 use App\Models\Seller;
-use Dotenv\Exception\ValidationException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,15 +14,19 @@ class SellerAuthController extends Controller
 {
     public function login(SellerLoginRequest $request){
 
-        $seller = Seller::where('phone', $request->phone)->first();
+        $seller = Seller::where('email', $request->email)->first();
 
-        if (! $seller || ! Hash::check($request->password, $seller->password)) {
+        
+        if(!$seller || !Hash::check($request->password, $seller->password)) {
             throw ValidationException::withMessages([
-                'phone' => ['The provided credentials are incorrect.'],
+                'email' => ['The provided credentials are incorrect.'],
+                'password' => ['The provided credentials are incorrect.'],
             ]);
         }
 
         return $this->makeToken($seller);
+
+
 
     }
 
@@ -30,11 +34,20 @@ class SellerAuthController extends Controller
     {
         $token = $seller->createToken('seller-token')->plainTextToken;
 
-        return (new SellerAuthResource($seller))
-                ->additional(['meta' => [
-                    'token' => $token,
-                    'token_type' => 'Bearer'
-                ]]);
+        // return (new AdminAuthResource($admin))
+        //         ->additional(['meta' => [
+        //             'token' => $token,
+        //             'token_type' => 'Bearer'
+        //         ]]);
+
+        return SellerAuthResource::make([
+            'user' => [
+                'name' => $seller->name,
+                'email' => $seller->email,
+                'phone' => $seller->phone,
+            ],
+            'token' => $token
+        ]);
     }
 
     public function logout(Request $request)

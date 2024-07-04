@@ -24,7 +24,7 @@ class SellerLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required', 'exists:sellers,phone'],
+            'email' => ['required', 'email', 'exists:sellers,email'],
             'password' => ['required'],
         ];
     }

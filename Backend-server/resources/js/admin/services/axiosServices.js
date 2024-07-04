@@ -1,20 +1,20 @@
 import axios from "axios";
-import { useAuth } from "@/stores";
+import { useAuth, useToken } from "@/admin/stores";
 // import { storeToRefs } from "pinia";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL + "/api/v1",
+  baseURL: "/api/v1",
 });
 
 axiosInstance.interceptors.request.use(
   function (config) {
-    const authInfo = useAuth();
-    // const user = storeToRefs(authInfo);
-    // const auth = authInfo.user.data ? `Bearar ${authInfo.user.meta.token}` : "";
-    if (authInfo.user.meta) {
-      const auth = `Bearer ${authInfo.user.meta.token}`;
+    const token = useToken();
+    if (token.getToken) {
+      const auth = `Bearer ${token.getToken}`;
       config.headers['Authorization'] = auth;
     }
+    config.headers["Accept"] = "application/json";
+
     return config;
   },
   function (error) {
@@ -22,7 +22,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-//user auto logout
+//admin auto logout
 
 axiosInstance.interceptors.response.use(
   (response) => {
@@ -30,9 +30,8 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      window.location.href = "/";
-      const authInfo = useAuth();
-      authInfo.$reset();
+      const auth = useAuth();
+      auth.removeAuthInfo();
     }
     return Promise.reject(error);
   }

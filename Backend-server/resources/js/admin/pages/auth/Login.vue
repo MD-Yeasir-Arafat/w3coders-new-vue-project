@@ -1,21 +1,26 @@
 <script setup>
+import { useAuth } from "@/admin/stores";
 import VTextInput from "@/common/components/VTextInput.vue";
-import { reactive } from "vue";
 import { Field, Form } from "vee-validate";
 import * as yup from "yup";
-
-const form = reactive({
-    email: "",
-    password: "",
-});
+import { useRouter } from "vue-router";
 
 const schema = yup.object({
     email: yup.string().required().email(),
     password: yup.string().required().min(8),
 });
 
+const router = useRouter();
+const auth = useAuth();
 const onSubmit = async (values, { setErrors, resetForm }) => {
-    console.log(values);
+    try {
+        const res = await auth.login(values);
+        if(res.user){
+            router.push({name: 'admin.home'})
+        }
+    } catch (error) {
+        setErrors(error);
+    }
 };
 </script>
 
@@ -37,19 +42,15 @@ const onSubmit = async (values, { setErrors, resetForm }) => {
                         <VTextInput
                             name="email"
                             type="email"
-                            v-model="form.email"
                             placeholder="Email"
                         />
-                       
                     </div>
                     <div class="input-group mb-3">
                         <VTextInput
                             name="password"
                             type="password"
-                            v-model="form.password"
                             placeholder="Password"
                         />
-                        
                     </div>
                     <div class="row">
                         <div class="col-8">
@@ -60,13 +61,11 @@ const onSubmit = async (values, { setErrors, resetForm }) => {
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button
-                                type="submit"
-                                class="btn btn-primary btn-block"
-                            >
-                                Sign In
-                            </button>
-                        </div>
+                        <button type="submit" :disabled="isSubmitting" class="btn btn-primary btn-block">
+                            Sign In
+                            <span v-show="isSubmitting" class="spinner-border spinner-border-sm"></span>
+                        </button>
+                    </div>
                         <!-- /.col -->
                     </div>
                 </Form>
@@ -76,11 +75,10 @@ const onSubmit = async (values, { setErrors, resetForm }) => {
     </div>
 </template>
 <style>
-.input-group>.custom-file,
-.input-group>.custom-select,
-.input-group>.form-control,
-.input-group>.form-control-plaintext {
+.input-group > .custom-file,
+.input-group > .custom-select,
+.input-group > .form-control,
+.input-group > .form-control-plaintext {
     width: 100%;
-
 }
 </style>

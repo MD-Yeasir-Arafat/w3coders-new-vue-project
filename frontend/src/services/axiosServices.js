@@ -15,6 +15,7 @@ axiosInstance.interceptors.request.use(
       const auth = `Bearer ${authInfo.user.meta.token}`;
       config.headers['Authorization'] = auth;
     }
+    config.headers["Accept"] = "application/json";
     return config;
   },
   function (error) {

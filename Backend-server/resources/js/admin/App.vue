@@ -1,18 +1,19 @@
 <script setup>
 import AdminLayout from "./layouts/AdminLayout.vue";
 import AdminGuestLayout from "./layouts/AdminGuestLayout.vue";
+import { useAuth } from "@/admin/stores";
 
-const isLoggedIn = false;
+const auth = useAuth();
 </script>
 <template>
     <div>
-        <AdminLayout v-if="isLoggedIn">
+        <AdminLayout v-if="auth.getAuthStatus">
             <section class="content">
                 <router-view></router-view>
             </section>
         </AdminLayout>
 
-        <AdminGuestLayout v-if="!isLoggedIn">
+        <AdminGuestLayout v-if="!auth.getAuthStatus">
             <router-view></router-view>
         </AdminGuestLayout>
     </div>

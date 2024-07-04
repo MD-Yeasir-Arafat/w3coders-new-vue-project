@@ -13,10 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('admin_filemanagers', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
-            $table->enum('type',['product','slider','category','brand']);
+            $table->integer('fileable_id');
+            $table->string('fileable_type');
+            $table->string('file_original_name');
+            $table->string('file_name');
+            $table->string('extension', 11);
+            $table->integer('file_size');
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_filemanagers');
+        Schema::dropIfExists('files');
     }
 };
